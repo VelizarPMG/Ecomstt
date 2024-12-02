@@ -1,0 +1,38 @@
+﻿@model CategoryViewModel
+
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="card mt-2">
+            <div class="card-header text-white bg-primary">
+                <h2>@(Model.Id != null ? $"Редактирай категория: {Model.Name}" : "Създай категория")</h2>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Category" asp-action="@(Model.Id != null ? "Update" : "Create")" method="post">
+                    <input type="hidden" asp-for="Id" />
+                   
+                    <div asp-validation-summary="All"></div>
+
+                    <div class="row mb-3 p-1">
+                        <label asp-for="Name" class="p-0"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="row mb-3 p-1">
+                        <label asp-for="DisplayOrder" class="p-0"></label>
+                        <input asp-for="DisplayOrder" class="form-control" />
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    </div>
+                    @* https://getbootstrap.com/docs/5.0/layout/columns/ *@
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary form-control">@(Model.Id != null ? "Редактирай" : "Създай")</button>
+                        </div>
+                        <div class="col-4">
+                            <a asp-controller="Category" asp-action="Index" class="btn btn-outline-secondary form-control">Към списъка</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+﻿@model ProductViewModel
+
+@Html.Partial("_Form", Model)
+@* Sections do not work in partial views and that is by design. *@
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+    }
+    <script src="~/js/product/_form.js"></script>
+}

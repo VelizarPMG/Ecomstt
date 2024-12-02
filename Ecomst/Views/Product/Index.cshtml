@@ -1,0 +1,275 @@
+﻿@model ProductTableViewModel;
+
+<div class="row">
+    <div class="col-12">
+        <h1>Списък с продукти</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 d-flex justify-content-end">
+        <a asp-controller="Product" asp-action="Create" class="btn btn-primary">Добави продукт</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card mt-5 border-primary shadow-sm">
+            <div class="card-header bg-primary bg-gradient text-white d-flex justify-content-between">
+                <div>
+                    <i class="bi bi-list"></i>Продукти
+                </div>
+                <div>
+                    @{
+                        var from = Model.Data.Count == 0 ? 0 : Model.Start + 1;
+                        var to = Model.Data.Count == 0 ? 0 : Model.Start + Model.Data.Count;
+                    }
+                    Показани са @(from)-@(to) от @(Model.RecordsFiltered) записа
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="overflow-y: hidden">
+                    <!-- align-middle text-nowrap -->
+                    <table class="table table-bordered table-hover align-middle text-nowrap m-0" style="border-style: hidden;">
+                        <thead class="text-center">
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <a asp-action="Index"
+                                       asp-route-SortOrder="@(Model.SortOrder == "codeNumber" ? "-codeNumber" : "codeNumber")"
+                                       asp-route-CodeNumber="@(Model.CodeNumber)"
+                                       asp-route-Title="@(Model.Title)"
+                                       asp-route-Description="@(Model.Description)"
+                                       asp-route-InStock="@(Model.InStock)"
+                                       asp-route-CategoryId="@(Model.CategoryId)">
+
+                                        @Html.DisplayNameFor(model => model.CodeNumber)
+                                        @if (Model.SortOrder == "codeNumber")
+                                        {
+                                            <i class="bi bi-sort-up"></i>
+                                        }
+                                        @if (Model.SortOrder == "-codeNumber")
+                                        {
+                                            <i class="bi bi-sort-down"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-action="Index"
+                                       asp-route-SortOrder="@(Model.SortOrder == "title" ? "-title" : "title")"
+                                       asp-route-CodeNumber="@(Model.CodeNumber)"
+                                       asp-route-Title="@(Model.Title)"
+                                       asp-route-Description="@(Model.Description)"
+                                       asp-route-InStock="@(Model.InStock)"
+                                       asp-route-CategoryId="@(Model.CategoryId)">
+
+                                        @Html.DisplayNameFor(model => model.Title)
+                                        @if (Model.SortOrder == "title")
+                                        {
+                                            <i class="bi bi-sort-up"></i>
+                                        }
+                                        @if (Model.SortOrder == "-title")
+                                        {
+                                            <i class="bi bi-sort-down"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                        @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th>
+                                    <a asp-action="Index"
+                                       asp-route-SortOrder="@(Model.SortOrder == "price" ? "-price" : "price")"
+                                       asp-route-CodeNumber="@(Model.CodeNumber)"
+                                       asp-route-Title="@(Model.Title)"
+                                       asp-route-Description="@(Model.Description)"
+                                       asp-route-InStock="@(Model.InStock)"
+                                       asp-route-CategoryId="@(Model.CategoryId)">
+
+                                        @Html.DisplayNameFor(model => model.Price)
+                                        @if (Model.SortOrder == "price")
+                                        {
+                                            <i class="bi bi-sort-up"></i>
+                                        }
+                                        @if (Model.SortOrder == "-price")
+                                        {
+                                            <i class="bi bi-sort-down"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.InStock)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CategoryId)
+                                </th>
+                                <th style="width: 75px;"></th>
+                            </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input type="text" asp-for="CodeNumber" form="id-search-form" class="form-control mx-1">
+                                        <a asp-controller="Product"
+                                           asp-action="Index"
+                                           asp-route-Title="@(Model.Title)"
+                                           asp-route-Description="@(Model.Description)"
+                                           asp-route-InStock="@(Model.InStock)"
+                                           asp-route-CategoryId="@(Model.CategoryId)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input type="text" asp-for="Title" form="id-search-form" class="form-control mx-1">
+                                        <a asp-controller="Product"
+                                           asp-action="Index"
+                                           asp-route-CodeNumber="@(Model.CodeNumber)"
+                                           asp-route-Description="@(Model.Description)"
+                                           asp-route-InStock="@(Model.InStock)"
+                                           asp-route-CategoryId="@(Model.CategoryId)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input type="text" asp-for="Description" form="id-search-form" class="form-control mx-1">
+                                        <a asp-controller="Product"
+                                           asp-action="Index"
+                                           asp-route-CodeNumber="@(Model.CodeNumber)"
+                                           asp-route-Title="@(Model.Title)"
+                                           asp-route-InStock="@(Model.InStock)"
+                                           asp-route-CategoryId="@(Model.CategoryId)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th></th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <select asp-for="InStock" asp-items="Model.InStockList" form="id-search-form" class="form-control mx-1">
+                                            <option disabled selected>--Избери наличност--</option>
+                                        </select>
+                                        <a asp-controller="Product"
+                                           asp-action="Index"
+                                           asp-route-CodeNumber="@(Model.CodeNumber)"
+                                           asp-route-Title="@(Model.Title)"
+                                           asp-route-Description="@(Model.Description)"
+                                           asp-route-CategoryId="@(Model.CategoryId)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <select asp-for="CategoryId" asp-items="Model.CategoryList" form="id-search-form" class="form-control mx-1">
+                                            <option disabled selected>--Избери категория--</option>
+                                        </select>
+                                        <a asp-controller="Product"
+                                           asp-action="Index"
+                                           asp-route-CodeNumber="@(Model.CodeNumber)"
+                                           asp-route-Title="@(Model.Title)"
+                                           asp-route-Description="@(Model.Description)"
+                                           asp-route-InStock="@(Model.InStock)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <form id="id-search-form" asp-controller="Product" asp-action="Index" method="get">
+                                        <button type="submit" class="btn btn-primary">Търси</button>
+                                    </form>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var count = Model.Start;
+                            }
+                            @foreach (var obj in Model.Data)
+                            {
+                                var collapseId = $"collapse-{count}";
+                               
+                                <tr>
+                                    <td class="text-center">@(++count)</td>
+                                    <td class="text-center">@obj.CodeNumber</td>
+                                    <td class="text-center">@obj.Title</td>
+                                    <td class="text-center">
+                                        <a href="#@collapseId" data-bs-toggle="collapse">Покажи описанието...</a>
+                                     </td>
+                                    <td class="text-center"><span class="p-2 badge rounded-pill bg-success">@obj.Price</span></td>
+                                    <td class="text-center">
+                                        @if (@obj.InStock == true)
+                                        {
+                                            <span style="color: rgba(var(--bs-success-rgb));"><i class="bi bi-check-circle"></i></span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: rgba(var(--bs-danger-rgb));"><i class="bi bi-x-circle"></i></span>
+                                        }
+                                    </td>
+                                    <td class="text-center">@obj.Category.Name</td>
+                                    <td class="text-center">
+                                        <div class="d-flex flex-row justify-content-center">
+                                            <a asp-controller="Product" asp-action="Update" asp-route-id="@(obj.Id)" title="Редактиране">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form method="post" action="@Url.Action("Delete", "Product")" onsubmit="return confirm('Наистина ли искате да изтриете този продукт: @obj.Title?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@(obj.Id)" />
+                                                <button type="submit" style="border: none; color:#0d6efd; background-color: transparent;" title="Изтриване">
+                                                    <i class="bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8" class="p-0">
+                                        <div id="@collapseId" class="accordion-collapse collapse" style="background-color: #cff4fc;">
+                                            <div class="accordion-body" style="white-space: initial;">
+                                                @obj.Description
+                                            </div>
+                                        </div>
+                                     </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <!--Utilities Spacing -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end m-0">
+                        @{
+                            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                        }
+                        <li class="page-item @prevDisabled">
+                            <a asp-action="Index"
+                               asp-route-SortOrder="@(Model.SortOrder)"
+                               asp-route-PageNumber="@(Model.PageNumber - 1)"
+                               asp-route-CodeNumber="@(Model.CodeNumber)"
+                               asp-route-Title="@(Model.Title)"
+                               asp-route-Description="@(Model.Description)"
+                               asp-route-InStock="@(Model.InStock)"
+                               asp-route-CategoryId="@(Model.CategoryId)"
+                               class="page-link" tabindex="-1">
+                                <i class="bi bi-chevron-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item @nextDisabled">
+                            <a asp-action="Index"
+                               asp-route-SortOrder="@(Model.SortOrder)"
+                               asp-route-PageNumber="@(Model.PageNumber + 1)"
+                               asp-route-CodeNumber="@(Model.CodeNumber)"
+                               asp-route-Title="@(Model.Title)"
+                               asp-route-Description="@(Model.Description)"
+                               asp-route-InStock="@(Model.InStock)"
+                               asp-route-CategoryId="@(Model.CategoryId)"
+                               class="page-link" tabindex="-1">
+                                <i class="bi bi-chevron-double-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,162 @@
+﻿@model CategoryTableViewModel;
+
+<div class="row">
+    <div class="col-12">
+        <h1>Списък с категории</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 d-flex justify-content-end">
+        <a asp-controller="Category" asp-action="Create" class="btn btn-primary">Добави категория</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+
+        <div class="card mt-5 border-primary shadow-sm">
+            <div class="card-header bg-primary bg-gradient text-white d-flex justify-content-between">
+                <div>
+                    <i class="bi bi-list"></i>Категории
+                </div>
+                <div>
+                    @{
+                        var from =  Model.Data.Count == 0 ? 0 : Model.Start + 1;
+                        var to = Model.Data.Count == 0 ? 0 : Model.Start + Model.Data.Count;
+                    }
+                    Показани са @(from)-@(to) от @(Model.RecordsFiltered) записа
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive" style="overflow-y: hidden">
+                    <!-- align-middle text-nowrap -->
+                    <table class="table table-bordered table-hover align-middle text-nowrap m-0" style="border-style: hidden;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <a asp-action="Index"
+                                       asp-route-SortOrder="@(Model.SortOrder == "name" ? "-name" : "name")"
+                                       asp-route-Name="@(Model.Name)"
+                                       asp-route-DisplayOrder="@(Model.DisplayOrder)">
+
+                                        @Html.DisplayNameFor(model => model.Name)
+                                        @if (Model.SortOrder == "name")
+                                        {
+                                            <i class="bi bi-sort-up"></i>
+                                        }
+                                        @if (Model.SortOrder == "-name")
+                                        {
+                                            <i class="bi bi-sort-down"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-action="Index"
+                                       asp-route-SortOrder="@(Model.SortOrder == "displayOrder" ? "-displayOrder" : "displayOrder")"
+                                       asp-route-Name="@(Model.Name)"
+                                       asp-route-DisplayOrder="@(Model.DisplayOrder)">
+
+                                        @Html.DisplayNameFor(model => model.DisplayOrder)
+                                        @if (Model.SortOrder == "displayOrder")
+                                        {
+                                            <i class="bi bi-sort-up"></i>
+                                        }
+                                        @if (Model.SortOrder == "-displayOrder")
+                                        {
+                                            <i class="bi bi-sort-down"></i>
+                                        }
+                                    </a>
+                                </th>
+                                <th style="width: 75px;"></th>
+                            </tr>
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input type="text" asp-for="Name" form="id-search-form" class="form-control mx-1">
+                                        <a asp-controller="Category"
+                                           asp-action="Index"
+                                           asp-route-DisplayOrder="@(Model.DisplayOrder)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <input type="text" asp-for="DisplayOrder" form="id-search-form" class="form-control mx-1">
+                                        <a asp-controller="Category"
+                                           asp-action="Index"
+                                           asp-route-Name="@(Model.Name)"
+                                           class="btn btn-light" tabindex="-1"><i class="bi bi-x"></i></a>
+                                    </div>
+                                </th>
+                                <th>
+                                    <form id="id-search-form" asp-controller="Category" asp-action="Index" method="get">
+                                        <button type="submit" class="btn btn-primary">Търси</button>
+                                    </form>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var count = Model.Start;
+                            }
+                            @foreach (var obj in Model.Data)
+                            {
+                                <tr>
+                                    <td>@(++count)</td>
+                                    <td>@obj.Name</td>
+                                    <td>@obj.DisplayOrder</td>
+                                    <td class="text-center">
+                                        <div class="d-flex flex-row justify-content-center">
+                                            <a asp-controller="Category" asp-action="Update" asp-route-id="@(obj.Id)" title="Редактиране">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <form method="post" action="@Url.Action("Delete", "Category")" onsubmit="return confirm('Наистина ли искате да изтриете категория: @obj.Name?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="Id" value="@(obj.Id)" />
+                                                <button type="submit" style="border: none; color:#0d6efd; background-color: transparent;" title="Изтриване">
+                                                    <i class="bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer">
+                <!--Utilities Spacing -->
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end m-0">
+                        @{
+                            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                        }
+                        <li class="page-item @prevDisabled">
+                            <a asp-action="Index"
+                               asp-route-SortOrder="@(Model.SortOrder)"
+                               asp-route-PageNumber="@(Model.PageNumber - 1)"
+                               asp-route-Name="@(Model.Name)"
+                               asp-route-DisplayOrder="@(Model.DisplayOrder)"
+                               class="page-link" tabindex="-1">
+                                <i class="bi bi-chevron-double-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item @nextDisabled">
+                            <a asp-action="Index"
+                               asp-route-SortOrder="@(Model.SortOrder)"
+                               asp-route-PageNumber="@(Model.PageNumber + 1)"
+                               asp-route-Name="@(Model.Name)"
+                               asp-route-DisplayOrder="@(Model.DisplayOrder)"
+                               class="page-link" tabindex="-1">
+                                <i class="bi bi-chevron-double-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

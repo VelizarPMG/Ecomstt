@@ -1,0 +1,23 @@
+﻿.dt-length {
+    padding: 10px;
+    background-color: #0d6efd;
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    color: white;
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc:hover, table.dataTable thead > tr > th.dt-orderable-desc:hover, table.dataTable thead > tr > td.dt-orderable-asc:hover, table.dataTable thead > tr > td.dt-orderable-desc:hover {
+    outline: 0px;
+}
+
+.dt-info{
+    padding-left: 10px;
+}
+
+.dt-paging {
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+table {
+    border-bottom: 1px solid;
+}
